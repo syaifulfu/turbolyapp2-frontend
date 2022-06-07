@@ -62,7 +62,7 @@
         },
         methods: {
             async get() {
-                await fetch("http://localhost:3000/tasks", {
+                await fetch(process.env.VUE_APP_API_URL+"tasks", {
                     method: "GET",
                 }).then(async (response) => {
                     let res = await response.json();
@@ -75,7 +75,7 @@
                 })
             },
             async destroy(id) {
-                await fetch("http://localhost:3000/tasks/"+id, {
+                await fetch(process.env.VUE_APP_API_URL+"tasks/"+id, {
                     method: "DELETE",
                 }).then(async (response) => {
                     let res = await response.json();

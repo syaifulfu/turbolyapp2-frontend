@@ -100,7 +100,7 @@
         },
         methods: {
             async find() {
-                await fetch("http://localhost:3000/tasks/"+this.$route.params.id, {
+                await fetch(process.env.VUE_APP_API_URL+"tasks/"+this.$route.params.id, {
                     method: "GET",
                 }).then(async (response) => {
                     let res = await response.json();
@@ -113,7 +113,7 @@
                 })
             },
             async update() {
-                await fetch("http://localhost:3000/tasks/"+this.$route.params.id, {
+                await fetch(process.env.VUE_APP_API_URL+"tasks/"+this.$route.params.id, {
                     method: "PATCH",
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(this.data),

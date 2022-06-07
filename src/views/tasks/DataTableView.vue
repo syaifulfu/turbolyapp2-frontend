@@ -112,7 +112,7 @@
         },
         methods: {
           async gets() {
-              await fetch("http://localhost:3000/tasks", {
+              await fetch(process.env.VUE_APP_API_URL+"tasks", {
                   method: "GET",
               }).then(async (response) => {
                   let res = await response.json();

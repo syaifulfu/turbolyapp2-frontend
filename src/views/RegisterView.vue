@@ -35,7 +35,7 @@
         },
         methods: {
             register: async function() {
-                await fetch("http://localhost:3000/users", {
+                await fetch(process.env.VUE_APP_API_URL+"users", {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(this.data),
