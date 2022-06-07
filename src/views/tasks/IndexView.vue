@@ -12,6 +12,10 @@
             </div>
         </div>
 
+        <div v-if="is_loading" class="text-center">
+            <img src="@/assets/loader.gif" class="text-center" alt="">
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -57,11 +61,13 @@
         name: 'IndexView',
         data() {
             return {
+                is_loading: false,
                 tasks: []
             }
         },
         methods: {
             async get() {
+                this.is_loading = true;
                 await fetch(process.env.VUE_APP_API_URL+"tasks", {
                     method: "GET",
                 }).then(async (response) => {
@@ -72,9 +78,11 @@
                     } else {
                         this.tasks = res.data
                     }
+                    this.is_loading = false;
                 })
             },
             async destroy(id) {
+                this.is_loading = true;
                 await fetch(process.env.VUE_APP_API_URL+"tasks/"+id, {
                     method: "DELETE",
                 }).then(async (response) => {
@@ -85,6 +93,7 @@
                     } else {
                         this.get()
                     }
+                    this.is_loading = false;
                 })
             }
         },
