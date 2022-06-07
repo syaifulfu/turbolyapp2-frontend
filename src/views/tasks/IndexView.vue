@@ -4,9 +4,8 @@
           <h1>Tasks</h1>
       </div>
       <div class="col-md-2 text-right">
-          <router-link to="/tasks/new" class="btn btn-success">
+          <router-link to="/tasks/new" title="Add" class="btn btn-success">
               <i class="fa fa-add"></i>
-              Add
           </router-link>
       </div>
   </div>
@@ -37,18 +36,18 @@
       <b v-else><i class="fa fa-times text-danger"></i></b>
     </template>
     <template #action="item">
-      <div class="operation-wrapper">
-        <router-link :to="'/tasks/show/'+item.id" class="btn btn-info btn-sm mr-2">
+      <div class="operation-wrapper text-right">
+        <a v-if="!item.is_completed" class="btn btn-secondary btn-sm mr-2" title="Set Completed" @click="setCompleted(item.id)">
+            <i class="fa fa-check"></i>
+        </a>
+        <router-link :to="'/tasks/show/'+item.id" title="Show" class="btn btn-info btn-sm mr-2">
             <i class="fa fa-eye"></i>
-            Show
         </router-link>
-        <router-link :to="'/tasks/edit/'+item.id" class="btn btn-danger btn-sm mr-2">
+        <router-link :to="'/tasks/edit/'+item.id" title="Edit" class="btn btn-danger btn-sm mr-2">
             <i class="fa fa-pencil"></i>
-            Edit
         </router-link>
-        <a class="btn btn-warning btn-sm" @click="destroy(item.id)">
+        <a class="btn btn-warning btn-sm" title="Delete" @click="destroy(item.id)">
             <i class="fa fa-trash"></i>
-            Delete
         </a>
       </div>
     </template>
@@ -106,6 +105,42 @@
                   this.is_loading = false
               })
           },
+          async destroy(id) {
+            if (confirm('Are you sure you want to delete this data?')) {
+              this.is_loading = true;
+              await fetch(process.env.VUE_APP_API_URL+"tasks/"+id, {
+                  method: "DELETE",
+              }).then(async (response) => {
+                  let res = await response.json();
+                  
+                  if (!res.success) {
+                      alert(res.message);
+                  } else {
+                      this.gets()
+                  }
+                  this.is_loading = false;
+              })
+            }
+          },
+          async setCompleted(id) {
+            if (confirm('You want to set completed?')) {
+              this.is_loading = true;
+              await fetch(process.env.VUE_APP_API_URL+"tasks/set_completed", {
+                  method: "POST",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({id: id}),
+              }).then(async (response) => {
+                  let res = await response.json();
+                  
+                  if (!res.success) {
+                      alert(res.message);
+                  } else {
+                      this.gets()
+                  }
+                  this.is_loading = false;
+              })
+            }
+          },
           format_date(value, format){
             if (value) {
               return moment(String(value)).format(format)
@@ -117,6 +152,13 @@
         }
     }
 </script>
+
+<style>
+  .btn-set-completed {
+    background: #73854A;
+    color: white;
+  }
+</style>
 
 <!-- <template>
   <EasyDataTable

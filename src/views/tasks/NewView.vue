@@ -52,7 +52,7 @@
     <div class="mb-3 row">
         <label :class="warning.is_completed ? 'col-sm-2 col-form-label text-danger' : 'col-sm-2 col-form-label'">Is Completed</label>
         <div class="col-sm-10">
-            <input v-model="data.is_completed" :class="warning.is_completed ? 'form-check-input is-invalid' : 'form-check-input'" type="checkbox" class="form-check-input">
+            <input v-model="data.is_completed" :class="warning.is_completed ? 'form-check-input ml-0 is-invalid' : 'form-check-input ml-0'" type="checkbox" class="form-check-input">
             <small 
                 class="text-danger"
                 v-for="(v, k) in warning.is_completed" :key="k">
@@ -64,12 +64,11 @@
     <div class="mb-3 row">
         <label class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-            <button class="btn btn-primary mr-2" @click="save()">
-                <i class="fa fa-save"></i> Save
+            <button title="Save" class="btn btn-primary mr-2" @click="save()">
+                <i class="fa fa-save"></i>
             </button>
-            <router-link to="/tasks" class="btn btn-secondary">
+            <router-link to="/tasks" title="Back" class="btn btn-secondary">
                 <i class="fa fa-arrow-left"></i>
-                Back
             </router-link>
         </div>
     </div>

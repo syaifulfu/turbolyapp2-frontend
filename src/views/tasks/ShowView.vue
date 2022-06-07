@@ -1,5 +1,5 @@
 <template>
-    <h1 class="text-center">Show</h1>
+    <h1>Show Data</h1>
     <br>
     <b>Name : </b>{{data.name}}<br>
     <b>Description : </b>{{data.description}}<br>
@@ -9,7 +9,6 @@
     <br>
     <router-link to="/tasks" class="btn btn-secondary">
         <i class="fa fa-arrow-left"></i>
-        Back
     </router-link>
 </template>
 
