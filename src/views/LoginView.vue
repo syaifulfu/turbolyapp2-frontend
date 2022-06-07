@@ -23,6 +23,7 @@
         name: 'LoginView',
         data: function() {
             return {
+                is_login: JSON.parse(localStorage.getItem('sessions')) != null,
                 data: {
                     email: '',
                     password: '',
@@ -41,7 +42,12 @@
                     if (!res.success) {
                         alert(res.message)
                     } else {
-                        this.$router.push({ name: "home" });
+                        localStorage.setItem('sessions', JSON.stringify(res.data))
+
+                        // if this.is_login {
+                            this.$router.push({ name: "home" });
+                        // }
+                        window.location.href = '/'
                     }
                 })
 

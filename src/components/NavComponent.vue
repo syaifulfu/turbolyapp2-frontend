@@ -14,14 +14,14 @@
               Home
             </router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="is_login" class="nav-item">
             <router-link 
               to="/tasks" 
               v-bind:class="this.$route.name == 'tasks' ? 'nav-link active' : 'nav-link'">
               Tasks
             </router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="is_login" class="nav-item">
             <router-link 
               to="/today" 
               v-bind:class="this.$route.name == 'today' ? 'nav-link active' : 'nav-link'">
@@ -32,19 +32,27 @@
       </div>
       <div>
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
+          <li v-if="!is_login" class="nav-item">
             <router-link 
               to="/login" 
               v-bind:class="this.$route.name == 'login' ? 'nav-link active' : 'nav-link'">
               Login
             </router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="!is_login" class="nav-item">
             <router-link 
               to="/register" 
               v-bind:class="this.$route.name == 'register' ? 'nav-link active' : 'nav-link'">
               Register
             </router-link>
+          </li>
+          <li v-if="is_login" class="nav-item">
+            <!-- <router-link 
+              to="/logout" 
+              v-bind:class="this.$route.name == 'logout' ? 'nav-link active' : 'nav-link'">
+              Logout
+            </router-link> -->
+            <a href="" class="nav-link" @click="logout()">Logout</a>
           </li>
         </ul>
       </div>
@@ -54,6 +62,23 @@
 
 <script>
     export default {
-        name: 'NavComponent'
+        name: 'NavComponent',
+        data() {
+          return {
+            is_login: JSON.parse(localStorage.getItem('sessions')) != null
+          }
+        },
+        methods: {
+          logout: function() {
+              localStorage.removeItem('sessions');
+
+              if (!this.is_login) {
+                this.$router.push({ name: "login" });
+              }
+              // this.$router.push({ name: "login" });
+
+              // window.location.href = '/login'
+          }
+        }
     }
 </script>
