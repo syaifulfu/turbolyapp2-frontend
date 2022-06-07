@@ -77,7 +77,7 @@
 
 <script>
     export default {
-        name: 'NewView',
+        name: 'IndexView',
         data() {
             return {
                 data: {

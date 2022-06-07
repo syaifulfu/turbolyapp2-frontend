@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Turboly-App</a>
+      <a class="navbar-brand" href="#"><b>TURBOLY-APP</b></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -19,13 +19,7 @@
               to="/tasks" 
               v-bind:class="this.$route.name == 'tasks' ? 'nav-link active' : 'nav-link'">
               Tasks
-            </router-link>
-          </li>
-          <li v-if="is_login" class="nav-item">
-            <router-link 
-              to="/today" 
-              v-bind:class="this.$route.name == 'today' ? 'nav-link active' : 'nav-link'">
-              Today
+              <span :class="today_tasks.length == 0 ? 'badge badge-light text-light bg-secondary' : 'badge badge-light text-light bg-danger'">{{today_tasks.length}}</span>
             </router-link>
           </li>
         </ul>
@@ -47,6 +41,9 @@
             </router-link>
           </li>
           <li v-if="is_login" class="nav-item">
+            <span class="nav-link text-light">({{sessions.name}})</span>
+          </li>
+          <li v-if="is_login" class="nav-item">
             <!-- <router-link 
               to="/logout" 
               v-bind:class="this.$route.name == 'logout' ? 'nav-link active' : 'nav-link'">
@@ -65,10 +62,28 @@
         name: 'NavComponent',
         data() {
           return {
-            is_login: JSON.parse(localStorage.getItem('sessions')) != null
+            sessions: JSON.parse(localStorage.getItem('sessions')),
+            is_login: JSON.parse(localStorage.getItem('sessions')) != null,
+            today_tasks: []
           }
         },
         methods: {
+          async getTodayTasks() {
+              this.is_loading = true
+              await fetch(process.env.VUE_APP_API_URL+"tasks", {
+                  method: "GET",
+              }).then(async (response) => {
+                  let res = await response.json();
+                  
+                  if (!res.success) {
+                      alert(res.message);
+                  } else {
+                      this.today_tasks = res.todays
+                  }
+
+                  this.is_loading = false
+              })
+          },
           logout: function() {
               localStorage.removeItem('sessions');
 
@@ -79,6 +94,9 @@
 
               // window.location.href = '/login'
           }
+        },
+        mounted() {
+          this.getTodayTasks()
         }
     }
 </script>

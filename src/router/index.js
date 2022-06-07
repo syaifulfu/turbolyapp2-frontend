@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import DataTableView from '@/views/tasks/DataTableView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import TaskIndexView from '@/views/tasks/IndexView.vue'
@@ -29,11 +28,6 @@ const routes = [
     path: '/tasks',
     name: 'tasks',
     component: TaskIndexView
-  },
-  {
-    path: '/datatable',
-    name: 'datatable',
-    component: DataTableView
   },
   {
     path: '/tasks/new',
